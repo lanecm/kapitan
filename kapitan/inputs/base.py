@@ -52,6 +52,7 @@ class InputType(object):
         """
         target_name = ext_vars["target"]
         output_path = comp_obj["output_path"]
+        output_dirname = comp_obj.get("output_dirname", target_name)
         output_type = comp_obj.get("output_type", self.default_output_type())
         file_found = False
 
@@ -61,7 +62,7 @@ class InputType(object):
                 file_found = True
                 logger.debug("Compiling %s", compile_file_sp)
                 try:
-                    _compile_path = os.path.join(self.compile_path, target_name, output_path)
+                    _compile_path = os.path.join(self.compile_path, output_dirname, output_path)
                     self.compile_file(compile_file_sp, _compile_path, ext_vars, output=output_type,
                                       target_name=target_name, **kwargs)
                 except KapitanError as e:

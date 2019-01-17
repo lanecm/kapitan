@@ -297,6 +297,7 @@ def compile_target(target_obj, search_paths, compile_path, ref_controller, **kwa
     for comp_obj in compile_objs:
         input_type = comp_obj["input_type"]
         output_path = comp_obj["output_path"]
+        output_dirname = comp_obj.get("output_dirname", target_name)
         if input_type == "jinja2":
             input_compiler = jinja2_compiler
         elif input_type == "jsonnet":
@@ -307,7 +308,7 @@ def compile_target(target_obj, search_paths, compile_path, ref_controller, **kwa
             err_msg = "Invalid input_type: \"{}\". Supported input_types: jsonnet, jinja2, kadet"
             raise CompileError(err_msg.format(input_type))
 
-        input_compiler.make_compile_dirs(target_name, output_path)
+        input_compiler.make_compile_dirs(output_dirname, output_path)
         input_compiler.compile_obj(comp_obj, ext_vars, **kwargs)
 
     logger.info("Compiled %s (%.2fs)", target_name, time.time() - start)
